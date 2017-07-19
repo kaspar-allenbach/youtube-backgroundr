@@ -1,0 +1,67 @@
+<script>
+  if( window.innerWidth >= 768) {
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('ytplayer', {
+          height: '100%',
+          width: '100%',
+          videoId: '{{ video.youtubeId }}',
+          enablejsapi: 1,
+          origin: '{{ craft.request.getUrl() }}',
+          playerVars: {
+            controls: 0,
+            disablekb: 1,
+            playlist: '{{ video.youtubeId }}',
+            showinfo: 0,
+            modestbranding: 1
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+
+      }
+
+      window.addEventListener('resize', onResize)
+      function onResize() {
+        if( window.innerWidth >= 1200) {
+          document.getElementById('ytplayer').style.width = window.innerWidth + "px";
+          document.getElementById("ytplayer").style.height = window.innerWidth * 0.5625 + "px";
+        }
+      }
+
+
+      function onPlayerReady(event) {
+        event.target.setVolume(0);
+        event.target.playVideo();
+
+        onResize()
+
+      }
+      function onPlayerStateChange(event) {
+        if (event.data === 1) {   
+          var d = document.getElementById("ytplayer");
+          d.className += " fadeIn";
+        }
+        if (event.data === YT.PlayerState.ENDED) {
+          player.playVideo(); 
+        }
+      }
+
+    }
+
+</script>
+
+
+<div class="showroom-large-ratiobox">
+  <div id="ytplayerSurface"></div> {# Overlay to prevent somebody from clicking the video #}
+  <div id="ytplayer"></div> {# The actual Player #}
+  <div id="ytplaceholder" style="background-image: url('https://img.youtube.com/vi/{# youtubeID #}/maxresdefault.jpg')"></div>
+</div>
