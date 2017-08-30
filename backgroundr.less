@@ -1,8 +1,30 @@
-.showroom-large {
-  position: relative;
-	padding-bottom: 56.25%;
-	height: 0;
+//The Container for the Video
+@media (min-width: @screen-sm-min) {
+  .aspectRatioWrapper {
+    width: 100%;
+    /* whatever width you want */
+    display: inline-block;
+    position: relative;
+  }
+  .aspectRatioWrapper:after {
+    padding-top: 56.25%;
+    /* 16:9 ratio */
+    display: block;
+    content: '';
+  }
+  .aspectRatioContent {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
+
+//The youtube Stuff
 
 #ytplayer {
   opacity: 0;
